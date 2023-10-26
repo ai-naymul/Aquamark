@@ -15,9 +15,10 @@ type = type(text_input)
 print=type
 get_x = tk.Entry()
 get_y = tk.Entry()
-
+original_image = None
 def open_file():
     file = filedialog.askopenfilename()
+    global original_image
     if file:
         with open(file, 'rb') as file:
             original_image = Image.open(file)
@@ -40,8 +41,15 @@ def open_file():
             photoimage = ImageTk.PhotoImage(original_image)
             image_label.config(image=photoimage)
             image_upload.image = photoimage
+            return original_image
+            
 
-
+        
+def save_file():
+    global original_image
+    file_path = filedialog.asksaveasfilename(defaultextension='.png', filetypes=[('PNG files', '*.png')])
+    if file_path:
+        original_image.save(file_path)
 ## Welcome Message
 welcome_message = tk.Label(text="Welcome To The Aquamark Pro", font=(25,15,'bold'))
 welcome_message.grid(row=0, column=1)
@@ -64,7 +72,7 @@ image_label.grid(row=4, column=1)
 image_upload = tk.Button(text="Upload you image here", command=open_file)
 image_upload.grid(row=5, column=1)
 
-update_image = tk.Button(text="Update", command=open_file)
+update_image = tk.Button(text="Save", command=save_file)
 update_image.grid(row=5, column=2)
 
 
