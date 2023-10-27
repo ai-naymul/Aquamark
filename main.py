@@ -1,59 +1,50 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image,ImageTk, ImageDraw, ImageFont
+# Constant 
+ORIGINAl_IMAGE = None
 
-
-
+## Define the tkinter 
 window = tk.Tk()
 window.geometry("800x700")
 
 ## Title Of the Project
 window.title("Aquamark Pro")
 
+# Get inputs from user
 text_input = tk.Entry()
 type = type(text_input)
-print=type
 get_x = tk.Entry()
 get_y = tk.Entry()
 get_text_color = tk.Entry()
-original_image = None
 def open_file():
     file = filedialog.askopenfilename()
-    global original_image
+    global ORIGINA_IMAGE
     if file:
         with open(file, 'rb') as file:
-            original_image = Image.open(file)
+            ORIGINAl_IMAGE = Image.open(file)
             max_width = 400
             max_height = 300
-            original_image.thumbnail((max_width,max_height))
-            photoimage = ImageTk.PhotoImage(original_image)
+            ORIGINAl_IMAGE.thumbnail((max_width,max_height))
+            photoimage = ImageTk.PhotoImage(ORIGINAl_IMAGE)
 
-            draw = ImageDraw.Draw(original_image)
+            draw = ImageDraw.Draw(ORIGINAl_IMAGE)
             
             text= text_input.get()
             font = ImageFont.truetype("arial.ttf", size=35)
-            # text_width, text_height = draw.textsize(text, font=font)
-
-            image_width, image_height = original_image.size
-            # text_x = (image_width - text_width) /2
-            # text_y = (image_height - text_height) / 2
             draw.text(xy=(int(get_x.get()),int(get_y.get())) ,text=text, fill=get_text_color.get(), font=font)
 
-            photoimage = ImageTk.PhotoImage(original_image)
+            photoimage = ImageTk.PhotoImage(ORIGINAl_IMAGE)
             image_label.config(image=photoimage)
             image_upload.image = photoimage
-            return original_image
-            
-
-        
+            return ORIGINAl_IMAGE
 def save_file():
-    global original_image
+    global ORIGINAl_IMAGE
     file_path = filedialog.asksaveasfilename(defaultextension='.png', filetypes=[('PNG files', '*.png')])
     if file_path:
-        original_image.save(file_path)
+        ORIGINAl_IMAGE.save(file_path)
         saved_message.config(text="Watermarked Image Saved Successfull")
 
-        
 ## Welcome Message
 welcome_message = tk.Label(text="Welcome To The Aquamark Pro", font=(25,15,'bold'))
 welcome_message.grid(row=0, column=1)
